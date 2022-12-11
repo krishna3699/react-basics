@@ -1,35 +1,37 @@
 import CardComponent from "../Card/CardComponent.js"
+import * as styles from './CardsListStyles.module.css'
+import SearchBarComponent from "../searchbar/SearchBarComponent.js"
+import { useState, useEffect } from "react"
+import { usernames } from '../constants/data.js'
 
-
-data = [
-    {
-        img: "https://lwfiles.mycourse.app/635a5db526fa77c557bab00d-public/2d54832dbf7c5cb77f0c44314840b1e9.gif",
-        role: 'dcsd',
-        organisation: 'saCDKSNC',
-        experience: '1',
-    },
-    {
-        img: "https://lwfiles.mycourse.app/635a5db526fa77c557bab00d-public/2d54832dbf7c5cb77f0c44314840b1e9.gif",
-        role: 'dcsd',
-        organisation: 'saCDKSNC',
-        experience: '1',
-    },
-    {
-        img: "https://lwfiles.mycourse.app/635a5db526fa77c557bab00d-public/2d54832dbf7c5cb77f0c44314840b1e9.gif",
-        role: 'dcsd',
-        organisation: 'saCDKSNC',
-        experience: '1',
-    },
-];
-
+let fullDat = [];
 const CardsListComponent = (props) => {
-    const { data } = props
+    useEffect(() => {
+        fetchData(usernames).then((res) => {
+            fullDat = res;
+            setCardsData(res);
+        });
+    }, [])
+
+    async function fetchData(usernames) {
+        const reqUrls = []
+        usernames.forEach((name) => {
+            reqUrls.push(fetch(`https://api.github.com/users/${name}`));
+        });
+        const response = await Promise.all(reqUrls);
+        const userData = await Promise.all(response.map((res) => res.json()));
+        return userData;
+    }
+    const [cardsData, setCardsData] = useState('');
     return (
-        <div className="cards-list-container">
-            {data.map((person) => {
-                return <CardComponent data={person}/>
-            })}
-        </div>
+        <>
+            <SearchBarComponent fullData={fullDat} setFunction={setCardsData}/>
+            <div className={styles.cardsContainer}>
+                {cardsData !== '' ? cardsData.map((person) => {
+                    return <CardComponent data={person} key={person.id}/>
+                }): <h1>not rendered</h1>}
+            </div>
+        </>
     )
 }
 

@@ -42,3 +42,14 @@ export const data = [
         id: 6,
     },
 ];
+
+export const usernames = [
+    'prakashrajotiya',
+    'gavandivya',
+    'shaksham08',
+    'gk9848970',
+    'nam334',
+    'upaharika',
+    'MallikarjunnKB',
+    'Ehraz98',
+]

@@ -1,41 +1,36 @@
 import { useState } from "react"
 
 export default SearchBarComponent = (props) => {
+    console.log(props);
     const fullData = props.fullData;
     const [searchKey, setSearchKey] = useState('');
-    let count = 0;
-    // let timeOut = false;
-    // let searchValue = '';
-    // setResult = () => {
-    //     timeOut = false;
-    //     const filteredData = fullData.filter((member) => {
-    //         return member.role.includes(searchValue);
-    //     })
-    //     props.setFunction(filteredData);
-    // };
+    let timeOut = false;
+    let searchValue = '';
 
-    // deBounce = (e) => {
-    //     searchValue = e.nativeEvent.data || '';
-    //     if(timeOut) {
-    //     } else {
-    //         timeOut = true;
-    //         setTimeout(setResult, 10000);
-    //     }
-    // }
+    /* reson for creating a seperate variable for search value instead of using the state variable is, 
+    / setting the state varaibles is async and facing some issues with that 
+    */
 
-    serachFunction = (e) => {
-        console.log(e);
-        setSearchKey(count);
-        const val = e.value || '';
-        console.log(val);
+    deBounce = (e) => {
+        searchValue = e.target.value || '';
+        setSearchKey(searchValue);
+        if(timeOut) {
+        } else {
+            timeOut = true;
+            setTimeout(serachFunction, 1000);
+        }
+    }
+
+    serachFunction = () => {
         const filteredData = fullData.filter((memeber) => {
-            return memeber.role.includes(val);
+            return memeber.name.includes(searchValue);
         });
         props.setFunction(filteredData);
+        timeOut = false;
     }
     return (
         <div>
-            <input id="search" placeholder="search" value={searchKey} onChange={serachFunction}>
+            <input id="search" placeholder="search" value={searchKey} onChange={deBounce}>
             </input>
         </div>
     )
