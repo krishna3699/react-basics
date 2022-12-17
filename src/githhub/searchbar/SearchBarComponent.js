@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useState } from "react";
+import * as styles from './SearchBarStyles.module.css';
 
 export default SearchBarComponent = (props) => {
     console.log(props);
@@ -30,7 +31,7 @@ export default SearchBarComponent = (props) => {
     }
     return (
         <div>
-            <input id="search" placeholder="search" value={searchKey} onChange={deBounce}>
+            <input className={styles['search-bar']} id="search" placeholder="search" value={searchKey} onChange={deBounce}>
             </input>
         </div>
     )
